@@ -1,4 +1,4 @@
-﻿namespace PerfilSolMAUI
+﻿namespace PerfilSolMAUI.Views
 {
     public partial class MainPage : ContentPage
     {

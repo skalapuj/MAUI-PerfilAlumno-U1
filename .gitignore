@@ -1,0 +1,26 @@
+## Directorios de compilación y salida de paquetes
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.launchsettings.json
+
+## Archivos generados y temporales
+*.tmp
+*.log
+*.DS_Store
+Thumbs.db
+
+## .NET MAUI específico (cachés multiplataforma)
+.idea/
+*.apk
+*.aab
+*.msix
+*.appx

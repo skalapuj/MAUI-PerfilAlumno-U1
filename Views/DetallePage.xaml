@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:viewmodels="clr-namespace:PerfilSolMAUI.ViewModels"
+            x:Class="PerfilSolMAUI.Views.DetallePage"
+            Title="Resumen del Perfil"
+            BackgroundColor="#F3F4F6">
+
+    <ContentPage.BindingContext>
+        <viewmodels:DetalleViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20" HorizontalOptions="Center">
+
+            <Border StrokeShape="RoundRectangle 16"
+                BackgroundColor="White"
+                Padding="24"
+                WidthRequest="320"
+                Stroke="#E5E7EB">
+                <VerticalStackLayout Spacing="14" HorizontalOptions="Center">
+                    <Border HeightRequest="120" 
+                            WidthRequest="120" 
+                            StrokeShape="RoundRectangle 60"
+                            StrokeThickness="0"
+                            Padding="0" 
+                            HorizontalOptions="Center"
+                            BackgroundColor="#E5E7EB">
+                        <Image Source="{Binding ImagenRecibida}" Aspect="AspectFill" />
+                    </Border>
+
+                    <Label Text="{Binding NombreRecibido}" 
+                        FontSize="22" 
+                        FontAttributes="Bold" 
+                        HorizontalTextAlignment="Center" 
+                        TextColor="#111827" />
+
+                    <Label Text="{Binding EdadRecibida}" 
+                        FontSize="16" 
+                        TextColor="#6B7280" 
+                        HorizontalTextAlignment="Center" />
+
+                    <Label Text="{Binding DescripcionRecibida}" 
+                        FontSize="14" 
+                        TextColor="#374151" 
+                        HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="Volver a Editar"
+                Command="{Binding VolverCommand}"
+                BackgroundColor="#4B5563"
+                TextColor="White"
+                CornerRadius="8"
+                WidthRequest="200" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

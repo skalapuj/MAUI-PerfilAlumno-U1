@@ -2,10 +2,11 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 namespace PerfilSolMAUI.ViewModels
 {
-    // Implementa INotifyPropertyChanged para avisar a la pantalla cuando los datos cambian
     public class ProfileViewModel : INotifyPropertyChanged
     {
         private UserProfile _perfil;
@@ -29,23 +30,22 @@ namespace PerfilSolMAUI.ViewModels
                 ImagenUrl = "https://picsum.photos/200"
             };
 
-            // Campos editables
+            // Carga inicial en campos editables
             NombreEditable = _perfil.Nombre;
             EdadEditable = _perfil.Edad.ToString();
             DescripcionEditable = _perfil.Descripcion;
             ImagenUrlEditable = _perfil.ImagenUrl;
 
-            // Asociamos el botón con su método
-            GuardarPerfilCommand = new Command(GuardarPerfil);
+            // Accion del comando
+            GuardarPerfilCommand = new Command(async () => await GuardarYNavegarAsync());
         }
 
-        // Propiedades de lectura de la tarjeta superior
+        // Propiedades para mostrar en pantalla
         public string NombreDisplay => _perfil.Nombre;
         public string EdadDisplay => $"{_perfil.Edad} años";
         public string DescripcionDisplay => _perfil.Descripcion;
         public string ImagenUrlDisplay => _perfil.ImagenUrl;
 
-        // Propiedades enlazadas a los campos de texto (TwoWay)
         public string NombreEditable
         {
             get => _nombreEditable;
@@ -124,28 +124,33 @@ namespace PerfilSolMAUI.ViewModels
             }
         }
 
-        // Acción del botón Guardar
         public ICommand GuardarPerfilCommand { get; }
 
-        private void GuardarPerfil()
+        private async Task GuardarYNavegarAsync()
         {
-            // Nombre obligatorio
+            if (Shell.Current == null)
+                return;
+
+            
             if (string.IsNullOrWhiteSpace(NombreEditable))
             {
                 MensajeEstado = "El nombre no puede estar vacío.";
                 ColorMensaje = Colors.Red;
+
+                await Shell.Current.DisplayAlertAsync("Validación", MensajeEstado, "Aceptar");
                 return;
             }
 
-            // Edad numérica y mayor a 18
             if (!int.TryParse(EdadEditable, out int edadValida) || edadValida <= 18)
             {
-                MensajeEstado = "Ingresá una edad válida en números.";
+                MensajeEstado = "Ingresá una edad válida mayor a 18 años.";
                 ColorMensaje = Colors.Red;
+
+                await Shell.Current.DisplayAlertAsync("Validación", MensajeEstado, "Aceptar");
                 return;
             }
 
-            // Si pasa las validaciones, actualizamos el modelo
+            // 2. Actualizacion del modelo interno
             _perfil.Nombre = NombreEditable.Trim();
             _perfil.Edad = edadValida;
             _perfil.Descripcion = DescripcionEditable.Trim();
@@ -153,14 +158,26 @@ namespace PerfilSolMAUI.ViewModels
                 ? "https://picsum.photos/200"
                 : ImagenUrlEditable.Trim();
 
-            // Notificamos a la UI para que refresque la tarjeta
+            // Refrescar UI local
             OnPropertyChanged(nameof(NombreDisplay));
             OnPropertyChanged(nameof(EdadDisplay));
             OnPropertyChanged(nameof(DescripcionDisplay));
             OnPropertyChanged(nameof(ImagenUrlDisplay));
 
-            MensajeEstado = "¡Perfil actualizado con éxito!";
+            MensajeEstado = "¡Perfil validado con éxito!";
             ColorMensaje = Colors.Green;
+
+            // 3. Notificacion visual de confirmacion antes de navegar
+            await Shell.Current.DisplayAlertAsync("Éxito", "Datos validados correctamente. Redirigiendo al detalle...", "Continuar");
+
+            // 4. Navegacion centralizada via Shell con parametros codificados
+            string nombreEscapado = Uri.EscapeDataString(_perfil.Nombre);
+            string descEscapada = Uri.EscapeDataString(_perfil.Descripcion);
+            string imagenEscapada = Uri.EscapeDataString(_perfil.ImagenUrl);
+
+            string rutaCompleta = $"detallePerfil?NombreParam={nombreEscapado}&EdadParam={_perfil.Edad}&DescripcionParam={descEscapada}&ImagenParam={imagenEscapada}";
+
+            await Shell.Current.GoToAsync(rutaCompleta);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:PerfilSolMAUI.ViewModels"
+             x:Class="PerfilSolMAUI.Views.MainPage"
+             Title="Perfil del Alumno"
+             BackgroundColor="#F4F6F8">
+
+    <!-- Conexión al ViewModel -->
+    <ContentPage.BindingContext>
+        <viewmodels:ProfileViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <Grid Padding="20" RowSpacing="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- TARJETA 1: Vista Previa del Perfil -->
+            <Border Grid.Row="0"
+                    StrokeShape="RoundRectangle 12"
+                    Stroke="#D1D5DB"
+                    BackgroundColor="#FFFFFF"
+                    Padding="16">
+                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <Border HeightRequest="120" 
+                            WidthRequest="120" 
+                            StrokeShape="RoundRectangle 60"
+                            StrokeThickness="0"
+                            Padding="0" 
+                            HorizontalOptions="Center"
+                            BackgroundColor="#E5E7EB">
+                        <Image Source="{Binding ImagenUrlDisplay}" 
+                               Aspect="AspectFill" 
+                               HeightRequest="120" 
+                               WidthRequest="120" />
+                    </Border>
+
+                    <Label Text="{Binding NombreDisplay}" 
+                           FontSize="22" 
+                           FontAttributes="Bold" 
+                           HorizontalTextAlignment="Center" 
+                           TextColor="#111827" />
+
+                    <Label Text="{Binding EdadDisplay}" 
+                           FontSize="16" 
+                           TextColor="#6B7280" 
+                           HorizontalTextAlignment="Center" />
+
+                    <Label Text="{Binding DescripcionDisplay}" 
+                           FontSize="14" 
+                           HorizontalTextAlignment="Center" 
+                           TextColor="#374151" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- TARJETA 2: Formulario para Editar -->
+            <Border Grid.Row="1"
+                    StrokeShape="RoundRectangle 12"
+                    Stroke="#D1D5DB"
+                    BackgroundColor="#FFFFFF"
+                    Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Editar Información" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#111827" />
+
+                    <!-- Nombre -->
+                    <Label Text="Nombre:" FontSize="13" TextColor="#4B5563" />
+                    <Entry Text="{Binding NombreEditable, Mode=TwoWay}" 
+                           TextColor="#111827"
+                           PlaceholderColor="#9CA3AF"
+                           BackgroundColor="#F9FAFB"
+                           Placeholder="Ingresa tu nombre" />
+
+                    <!-- Edad -->
+                    <Label Text="Edad:" FontSize="13" TextColor="#4B5563" />
+                    <Entry Text="{Binding EdadEditable, Mode=TwoWay}" 
+                           Keyboard="Numeric" 
+                           TextColor="#111827"
+                           PlaceholderColor="#9CA3AF"
+                           BackgroundColor="#F9FAFB"
+                           Placeholder="Ingresa tu edad" />
+
+                    <!-- URL Foto -->
+                    <Label Text="URL de la Foto:" FontSize="13" TextColor="#4B5563" />
+                    <Entry Text="{Binding ImagenUrlEditable, Mode=TwoWay}" 
+                           TextColor="#111827"
+                           PlaceholderColor="#9CA3AF"
+                           BackgroundColor="#F9FAFB"
+                           Placeholder="https://enlace-a-tu-foto.jpg" />
+
+                    <!-- Descripción -->
+                    <Label Text="Descripción:" FontSize="13" TextColor="#4B5563" />
+                    <Editor Text="{Binding DescripcionEditable, Mode=TwoWay}" 
+                            HeightRequest="80" 
+                            TextColor="#111827"
+                            PlaceholderColor="#9CA3AF"
+                            BackgroundColor="#F9FAFB"
+                            Placeholder="Breve descripción..." />
+
+                    <!-- Mensaje de Validación / Feedback -->
+                    <Label Text="{Binding MensajeEstado}" 
+                           TextColor="{Binding ColorMensaje}" 
+                           FontSize="13" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center" />
+
+                    <!-- Botón Guardar -->
+                    <Button Text="Guardar Cambios" 
+                            Command="{Binding GuardarPerfilCommand}" 
+                            BackgroundColor="#2563EB" 
+                            TextColor="#FFFFFF" 
+                            CornerRadius="8" 
+                            HeightRequest="45" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </ScrollView>
+</ContentPage>
