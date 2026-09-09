@@ -102,13 +102,6 @@
                             BackgroundColor="#F9FAFB"
                             Placeholder="Breve descripción..." />
 
-                    <!-- Mensaje de Validación / Feedback -->
-                    <Label Text="{Binding MensajeEstado}" 
-                           TextColor="{Binding ColorMensaje}" 
-                           FontSize="13" 
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center" />
-
                     <!-- Botón Guardar -->
                     <Button Text="Guardar Cambios" 
                             Command="{Binding GuardarPerfilCommand}" 
